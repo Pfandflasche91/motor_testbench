@@ -17,15 +17,36 @@
  ******************************************************************************
  */
 
-#include <stdint.h>
+#include "stm32f401re.h"
+#include<stdint.h>
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
+void delay(void)
+{
+	for(uint32_t i =0; i < 1000000;i++);
+}
+
 int main(void)
 {
-    while(1){
+	GPIO_Handle_t GPIOLED;
+	GPIOLED.pGPIOx = GPIOA;
+	GPIOLED.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_5;
+	GPIOLED.GPIO_PinConfig.GPIO_PinMode =GPIO_MODE_OUT;
+	GPIOLED.GPIO_PinConfig.GPIO_PinSpeed =GPIO_SPEED_LOW;
+	GPIOLED.GPIO_PinConfig.GPIO_PinOPType =GPIO_OP_TYPE_PP;
+	GPIOLED.GPIO_PinConfig.GPIO_PinPuPdControl =GPIO_NO_PUPD;
 
-    }
+	GPIO_PCLK(GPIOA, ENABLE);
+	GPIO_Init(&GPIOLED);
+
+	while(1)
+	{
+		GPIO_Toggle(GPIOA, GPIO_PIN_NO_5);
+		delay();
+	}
+
+	return 0;
 }

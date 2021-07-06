@@ -11,6 +11,7 @@ RM := rm -rf
 -include sources.mk
 -include Startup/subdir.mk
 -include Src/subdir.mk
+-include Drivers/Src/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -61,7 +62,7 @@ main-build: motor_testbench.elf secondary-outputs
 
 # Tool invocations
 motor_testbench.elf: $(OBJS) $(USER_OBJS) D:\Projekte\motor_testbench\01_Software_ECU\STM32F401RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "motor_testbench.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Projekte\motor_testbench\01_Software_ECU\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_testbench.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "motor_testbench.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Projekte\motor_testbench\01_Software_ECU\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="motor_testbench.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
