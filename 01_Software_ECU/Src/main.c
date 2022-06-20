@@ -39,13 +39,28 @@ int main(void)
 	GPIOLED.GPIO_PinConfig.GPIO_PinOPType =GPIO_OP_TYPE_PP;
 	GPIOLED.GPIO_PinConfig.GPIO_PinPuPdControl =GPIO_NO_PUPD;
 
+	GPIO_Handle_t GPIOBUTTON;
+	GPIOBUTTON.pGPIOx = GPIOC;
+	GPIOBUTTON.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13;
+	GPIOBUTTON.GPIO_PinConfig.GPIO_PinMode =GPIO_MODE_IN;
+	GPIOBUTTON.GPIO_PinConfig.GPIO_PinSpeed =GPIO_SPEED_LOW;
+	GPIOBUTTON.GPIO_PinConfig.GPIO_PinPuPdControl =GPIO_NO_PUPD;
+
 	GPIO_PCLK(GPIOA, ENABLE);
+	GPIO_PCLK(GPIOC, ENABLE);
 	GPIO_Init(&GPIOLED);
+	GPIO_Init(&GPIOBUTTON);
 
 	while(1)
 	{
-		GPIO_Toggle(GPIOA, GPIO_PIN_NO_5);
-		delay();
+		if(!(GPIO_Read(GPIOC, GPIO_PIN_NO_13)))
+		{
+			GPIO_Write(GPIOA, GPIO_PIN_NO_5, SET);
+		}else
+		{
+			GPIO_Write(GPIOA, GPIO_PIN_NO_5, RESET);
+		}
+
 	}
 
 	return 0;
